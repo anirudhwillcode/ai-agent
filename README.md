@@ -50,15 +50,15 @@ For example, I have a buggy calculator app, so I used my agent to fix the code:
 
 Here’s your setup guide formatted neatly for a **GitHub README.md** section — ideal for the “Getting Started” or “Setup Instructions” part of your project:
 
----
 
-## 🧠 Getting Started
+
+### Getting Started
 
 Follow these steps to set up and test the project after forking it.
 
 ---
 
-### 1. 🚀 Clone and Set Up Environment
+### 1.Clone and Set Up Environment
 
 ```bash
 # Clone your forked repository
@@ -72,7 +72,7 @@ source .venv/bin/activate   # On Windows: .venv\Scripts\activate
 
 ---
 
-### 2. 📦 Install Dependencies
+### 2.Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -80,7 +80,7 @@ pip install -r requirements.txt
 
 ---
 
-### 3. 🔐 Set Up API Key
+### 3.Set Up API Key
 
 ```bash
 # Create a .env file
@@ -103,7 +103,7 @@ uv run calculator/main.py "3 + 7 * 2" (this should be 17, but because we broke i
 Run your agent, and ask it to "fix the bug: 3 + 7 * 2 shouldn't be 20"
 
 
-### 📁 Project Structure
+### Project Structure
 
 ```
 ai-agent/
@@ -122,7 +122,7 @@ ai-agent/
 
 ---
 
-### 🧩 Troubleshooting
+### Troubleshooting
 
 If you encounter issues, check:
 
@@ -130,6 +130,7 @@ If you encounter issues, check:
 * Virtual environment activation
 * `.env` file setup
 * Dependency installation → `pip list`
+
 
 
 
