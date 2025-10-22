@@ -1,147 +1,168 @@
-# AI Code Agent — toy agentic code editor 
 
-> A small, educational Python project that demonstrates how to build an LLM-powered code agent (think: lightweight Claude Code / Cursor agent).
-> The agent uses the Google Gemini API for reasoning + function-calling, runs iterative feedback loops, inspects a codebase, proposes edits, and applies fixes — useful for learning about agent design, safety checks, and developer tooling.
+# AI AGENT
 
----
+If you've ever used Cursor or Claude Code as an "agentic" AI editor, you'll understand what is this project.
 
-## 🔦 What this is
-
-This repo contains a **toy agentic code editor** implemented in Python.
-It’s designed as a learning project that demonstrates:
-
-* How to structure a code-fixing agent (observe → propose → execute → verify → iterate).
-* Integrating a language model (Gemini) via function-calling to produce structured actions.
-* Safe/limited execution of proposed code changes.
-* A simple feedback loop for validating fixes (unit tests / lint run / run script).
-* Minimal, clear architecture so you can extend it.
-
-This is **not** production-level tooling — it’s an educational reference and prototype.
+We're building a toy version of Claude Code using Google's free Gemini API! As long as you have an LLM at your disposal, it's actually surprisingly simple to build a (somewhat) effective custom agent.
 
 ---
 
-## ✅ Key features
+## What Does the Agent Do?
 
-* Agent loop: **Plan → Act → Observe → Reflect → Repeat**.
-* Function-calling interface: LLM returns structured actions (e.g., `read_file`, `write_file`, `run_tests`, `run_command`).
-* Sandbox execution of changes (configurable).
-* Test-driven verification: run project's tests or a custom validation command after edits.
-* Configurable max iterations & safety constraints (to avoid runaway edits).
-* Logging and change summarization for each iteration.
+The program we're building is a CLI tool that:
+
+* Accepts a coding task (e.g., `"strings aren't splitting in my app, pweeze fix 🥺👉🏽👈🏽"`)
+* Chooses from a set of predefined functions to work on the task, for example:
+
+  * Scan the files in a directory
+  * Read a file's contents
+  * Overwrite a file's contents
+  * Execute the Python interpreter on a file
+* Repeats step 2 until the task is complete (or it fails miserably, which is possible)
 
 ---
 
-## 📦 Repo layout (example)
+### Example
+
+For example, I have a buggy calculator app, so I used my agent to fix the code:
 
 ```
-.
-├── agent/                  # core agent code
-│   ├── agent.py            # main agent loop
-│   ├── llm_client.py       # Gemini wrapper & function-call helpers
-│   ├── executor.py         # sandboxed execution, run commands, run tests
-│   └── fs_utils.py         # safe file read/write helpers
-├── examples/               # demo projects the agent can operate on
-├── tests/                  # unit/integration checks for the agent itself
-├── README.md
-├── requirements.txt
-└── .env.example            # environment variables example
+> uv run main.py "fix my calculator app, its not starting correctly"
+# Calling function: get_files_info
+# Calling function: get_file_content
+# Calling function: write_file
+# Calling function: run_python_file
+# Calling function: write_file
+# Calling function: run_python_file
+# Final response:
+# Great! The calculator app now seems to be working correctly. The output shows the expression and the result in a formatted way.
 ```
 
 ---
 
-## 🔧 Requirements
+## What Does the Agent Do?
 
-* Python 3.10+
-* `pip` to install dependencies (see `requirements.txt`)
-* A Google Gemini API key (set as `GEMINI_API_KEY` in env or `.env`)
-* Optional: `git` if you want agent to commit / branch edits
+The program we're building is a CLI tool that:
+
+* Accepts a coding task (e.g., `"strings aren't splitting in my app, pweeze fix 🥺👉🏽👈🏽"`)
+* Chooses from a set of predefined functions to work on the task, for example:
+
+  * Scan the files in a directory
+  * Read a file's contents
+  * Overwrite a file's contents
+  * Execute the Python interpreter on a file
+* Repeats step 2 until the task is complete (or it fails miserably, which is possible)
 
 ---
 
-## ⚙️ Installation
+### Example
+
+For example, I have a buggy calculator app, so I used my agent to fix the code:
+
+```
+> uv run main.py "fix my calculator app, its not starting correctly"
+# Calling function: get_files_info
+# Calling function: get_file_content
+# Calling function: write_file
+# Calling function: run_python_file
+# Calling function: write_file
+# Calling function: run_python_file
+# Final response:
+# Great! The calculator app now seems to be working correctly. The output shows the expression and the result in a formatted way.
+```
+
+---
+
+## Prerequisites
+
+* Python 3.10+ installed (see the bookbot project for help if you don't already have it)
+* uv project and package manager
+* Access to a Unix-like shell (e.g. zsh or bash)
+
+---
+## How To Setup 
+
+Here’s your setup guide formatted neatly for a **GitHub README.md** section — ideal for the “Getting Started” or “Setup Instructions” part of your project:
+
+---
+
+## 🧠 Getting Started
+
+Follow these steps to set up and test the project after forking it.
+
+---
+
+### 1. 🚀 Clone and Set Up Environment
 
 ```bash
-git clone <your-repo-url>
-cd ai-code-agent
+# Clone your forked repository
+git clone <your-fork-url>
+cd ai-agent
+
+# Create and activate a virtual environment
 python -m venv .venv
-source .venv/bin/activate        # macOS / Linux
-# .venv\Scripts\activate         # Windows PowerShell
-pip install -r requirements.txt
-
-# copy and update .env.example to .env
-cp .env.example .env
-# put your GEMINI_API_KEY in .env or export to environment:
-# export GEMINI_API_KEY="sk-..."
-```
-
-`requirements.txt` should include things like:
-
-```
-requests
-python-dotenv
-pytest     # optional, for running tests
-# plus any wrapper lib for Gemini if you are using one
+source .venv/bin/activate   # On Windows: .venv\Scripts\activate
 ```
 
 ---
 
-## 🧭 How to use (example)
-<img width="1529" height="961" alt="image" src="https://github.com/user-attachments/assets/322c0fa0-6b2c-4c10-b4b5-e25564b502b6" />
-
+### 2. 📦 Install Dependencies
 
 ```bash
-python agent/agent.py \
-  --target-dir examples/simple-buggy-app \
-  --validate-cmd "pytest -q" \
-  --max-iterations 5 \
-  --dry-run
-```
-
-Flags:
--- verbose - just try and check for yourselves
----
-
-
-## 🔒 Safety & constraints
-
-* **Max iterations** prevents runaway loops.
-* **Dry-run mode** to preview changes.
-* **Sandbox/Escrow**: run commands inside a disposable environment or container if you integrate that.
-* **Restricted function set**: only allow explicit functions (`read_file`, `write_file`, `run_tests`, `run_command`) — no arbitrary shell execution unless explicitly enabled.
-* **Manual review** recommended before merging edits into main branches.
-
----
-
-## 📝 Example usage snippet (Python)
-
-```python
-from agent.agent import CodeAgent
-
-agent = CodeAgent(
-    llm_api_key=os.getenv("GEMINI_API_KEY"),
-    target_dir="examples/simple-buggy-app",
-    validate_cmd="pytest -q",
-    max_iterations=5,
-    dry_run=True
-)
-
-result = agent.run()
-print(result.summary())
+pip install -r requirements.txt
 ```
 
 ---
 
+### 3. 🔐 Set Up API Key
 
-## ♻️ Extending the agent
+```bash
+# Create a .env file
+touch .env
 
-Ideas to add:
+# Add your Gemini API key to the file
+echo "GEMINI_API_KEY=your_api_key_here" > .env
+```
 
-* Git integration: create branch, commit, push changes and create a PR.
-* CI integration: automatically run full CI pipeline for verification.
-* Multi-file patch support with unified diffs.
-* Better static analysis: integrate `mypy`, `ruff`, `pylint`.
-* Safety policies: restrict edits by path, filename pattern, or file size.
-* Interactive mode: human-in-the-loop approval per change.
+> 💡 You can get your Gemini API key from [Google AI Studio](https://aistudio.google.com/).
 
 ---
+
+### 4. 🧪 How To check the working of the agent ? 
+SCENARIO :- 
+
+Manually update calculator/pkg/calculator.py and change the precedence of the + operator to 3.
+Run the calculator app, to make sure it's now producing incorrect results: 
+uv run calculator/main.py "3 + 7 * 2" (this should be 17, but because we broke it, it says 20)
+Run your agent, and ask it to "fix the bug: 3 + 7 * 2 shouldn't be 20"
+
+
+### 📁 Project Structure
+
+```
+ai-agent/
+│
+├── calculator/
+│   ├── calculator.py        # Calculator logic
+│   ├── tests.py             # Unit tests
+│
+├── functions/               # Utility functions
+│
+├── main.py                  # Main interface
+├── requirements.txt
+├── .env                     # Environment variables
+└── pyproject.toml
+```
+
+---
+
+### 🧩 Troubleshooting
+
+If you encounter issues, check:
+
+* Python version → `python --version`
+* Virtual environment activation
+* `.env` file setup
+* Dependency installation → `pip list`
+
 
