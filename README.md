@@ -1,4 +1,4 @@
-# AI Code Agent — toy agentic code editor (README)
+# AI Code Agent — toy agentic code editor 
 
 > A small, educational Python project that demonstrates how to build an LLM-powered code agent (think: lightweight Claude Code / Cursor agent).
 > The agent uses the Google Gemini API for reasoning + function-calling, runs iterative feedback loops, inspects a codebase, proposes edits, and applies fixes — useful for learning about agent design, safety checks, and developer tooling.
@@ -144,3 +144,4 @@ Ideas to add:
 * Interactive mode: human-in-the-loop approval per change.
 
 ---
+
